@@ -20,7 +20,7 @@ namespace FundooNotes.Controllers
             this.userBL = userBL;
             this.dbContext = fundooDb;
         }
-        [HttpPost]
+        [HttpPost("register")]
         public ActionResult RegisterUser(UserPostModel userPostModel)
         {
             try
@@ -29,6 +29,19 @@ namespace FundooNotes.Controllers
                 return this.Ok(new { success = true, message = $"Registration Successful {userPostModel.email}" });
             }
             catch(Exception e)
+            {
+                throw e;
+            }
+        }
+        [HttpPost("login")]
+        public ActionResult LogInUser(UserLogIn userLogIn)
+        {
+            try
+            {
+                this.userBL.LogInUser(userLogIn);
+                return this.Ok(new { success = true, message = $"LogIn Successful {userLogIn.email}" });
+            }
+            catch (Exception e)
             {
                 throw e;
             }

@@ -3,6 +3,7 @@ using RepositoryLayer.Interface;
 using RepositoryLayer.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RepositoryLayer.Services
@@ -31,6 +32,22 @@ namespace RepositoryLayer.Services
                 user.modifiedDate = DateTime.Now;
                 dbContext.Users.Add(user);
                 dbContext.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+        public bool LogInUser(UserLogIn userLogIn)
+        {
+            try
+            {
+                User user = new User();
+                var result = dbContext.Users.Where(x => x.email == userLogIn.email && x.password == userLogIn.password).FirstOrDefault();
+                if (result != null)
+                    return true;
+                else
+                    return false;
             }
             catch(Exception e)
             {
