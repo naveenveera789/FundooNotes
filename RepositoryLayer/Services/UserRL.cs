@@ -95,5 +95,17 @@ namespace RepositoryLayer.Services
                 throw e;
             }
         }
+        public void ForgetPassword(string email)
+        {
+            try
+            {
+                User user = new User();
+                var result = dbContext.Users.Where(x => x.email == email).FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
