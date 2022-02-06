@@ -9,5 +9,6 @@ namespace BusinessLayer.Interface
     {
         void RegisterUser(UserPostModel userPostModel);
         string LogInUser(UserLogIn userLogIn);
+        void ResetPassword(string email, string password, string cPassword);
     }
 }

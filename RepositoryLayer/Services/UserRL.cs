@@ -77,5 +77,23 @@ namespace RepositoryLayer.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+        public void ResetPassword(string email, string password, string cPassword)
+        {
+            try
+            {
+                User user = new User();
+                var result = dbContext.Users.FirstOrDefault(x => x.email == email);
+                if (result != null)
+                {
+                    result.password = password;
+                    result.cPassword = cPassword;
+                    dbContext.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
