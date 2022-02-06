@@ -8,6 +8,6 @@ namespace BusinessLayer.Interface
     public interface IUserBL
     {
         void RegisterUser(UserPostModel userPostModel);
-        bool LogInUser(UserLogIn userLogIn);
+        string LogInUser(UserLogIn userLogIn);
     }
 }

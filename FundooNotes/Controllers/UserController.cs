@@ -1,10 +1,13 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
@@ -38,8 +41,8 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                this.userBL.LogInUser(userLogIn);
-                return this.Ok(new { success = true, message = $"LogIn Successful {userLogIn.email}" });
+                string result = this.userBL.LogInUser(userLogIn);
+                return this.Ok(new { success = true, message = $"LogIn Successful {userLogIn.email}, data = {result}" });
             }
             catch (Exception e)
             {

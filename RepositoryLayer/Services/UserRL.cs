@@ -1,9 +1,12 @@
 ﻿using CommonLayer.User;
+using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Interface;
 using RepositoryLayer.Services;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 
 namespace RepositoryLayer.Services
@@ -38,21 +41,41 @@ namespace RepositoryLayer.Services
                 throw e;
             }
         }
-        public bool LogInUser(UserLogIn userLogIn)
+        public string LogInUser(UserLogIn userLogIn)
         {
             try
             {
                 User user = new User();
                 var result = dbContext.Users.Where(x => x.email == userLogIn.email && x.password == userLogIn.password).FirstOrDefault();
                 if (result != null)
-                    return true;
+                    return GenerateJWTToken(userLogIn.email, user.userId);
                 else
-                    return false;
+                    return null;
             }
             catch(Exception e)
             {
                 throw e;
             }
+        }
+        private static string GenerateJWTToken(string email, int userId)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenKey = Encoding.ASCII.GetBytes("THIS_IS_MY_KEY_TO_GENERATE_TOKEN");
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim("email", email),
+                    new Claim("userId", userId.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials =
+                new SigningCredentials(
+                    new SymmetricSecurityKey(tokenKey),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }
