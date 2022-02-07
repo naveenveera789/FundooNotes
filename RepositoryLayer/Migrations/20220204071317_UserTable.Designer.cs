@@ -59,6 +59,10 @@ namespace RepositoryLayer.Migrations
                     b.Property<DateTime>("registeredDate")
                         .HasColumnType("datetime2");
 
+                    b.HasIndex("email")
+                        .IsUnique()
+                        .HasFilter("[email] IS NOT NULL");
+
                     b.HasKey("userId");
 
                     b.ToTable("Users");

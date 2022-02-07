@@ -59,6 +59,10 @@ namespace RepositoryLayer.Migrations
 
                     b.HasKey("userId");
 
+                    b.HasIndex("email")
+                        .IsUnique()
+                        .HasFilter("[email] IS NOT NULL");
+
                     b.ToTable("Users");
                 });
 #pragma warning restore 612, 618

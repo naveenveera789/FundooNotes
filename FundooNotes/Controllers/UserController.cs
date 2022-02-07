@@ -49,11 +49,13 @@ namespace FundooNotes.Controllers
                 throw e;
             }
         }
+        [Authorize]
         [HttpPut("resetpassword")]
         public ActionResult ResetPassword(string email, string password, string cPassword)
         {
             try
             {
+                ///var userEmailObject = User.Claims.Where(x => x.Type.ToString().Equals("email", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault()?.Value;
                 if (password != cPassword)
                 {
                     return BadRequest(new { success = false, message = $"Paswords are not equal" });

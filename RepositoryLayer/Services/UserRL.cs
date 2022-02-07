@@ -29,8 +29,8 @@ namespace RepositoryLayer.Services
                 user.email = userPostModel.email;
                 user.phoneNumber = userPostModel.phoneNumber;
                 user.address = userPostModel.address;
-                user.password = userPostModel.password;
-                user.cPassword = userPostModel.cPassword;
+                user.password = StringCipher.Encrypt(userPostModel.password);
+                user.cPassword = StringCipher.Encrypt(userPostModel.cPassword);
                 user.registeredDate = DateTime.Now;
                 user.modifiedDate = DateTime.Now;
                 dbContext.Users.Add(user);

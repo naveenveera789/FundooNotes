@@ -27,6 +27,12 @@ namespace RepositoryLayer.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.userId);
                 });
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_email",
+                table: "Users",
+                column: "email",
+                unique: true,
+                filter: "[email] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
