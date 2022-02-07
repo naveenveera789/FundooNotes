@@ -36,7 +36,6 @@ namespace FundooNotes
         {
             services.AddDbContext<FundooDbContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:FundooProject"]));
             services.AddControllers();
-            services.AddSwaggerGen();
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
             services.AddAuthentication(x =>

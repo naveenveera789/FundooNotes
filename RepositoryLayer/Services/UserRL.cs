@@ -36,7 +36,7 @@ namespace RepositoryLayer.Services
                 dbContext.Users.Add(user);
                 dbContext.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
@@ -52,7 +52,7 @@ namespace RepositoryLayer.Services
                 else
                     return null;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
@@ -103,6 +103,18 @@ namespace RepositoryLayer.Services
                 var result = dbContext.Users.Where(x => x.email == email).FirstOrDefault();
             }
             catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public List<User> GetAllUsers()
+        {
+            try
+            {
+                var result = dbContext.Users.ToList();
+                return result;
+            }
+            catch(Exception e)
             {
                 throw e;
             }
