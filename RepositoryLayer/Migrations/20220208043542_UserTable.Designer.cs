@@ -10,7 +10,7 @@ using RepositoryLayer.Services;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(FundooDbContext))]
-    [Migration("20220204071317_UserTable")]
+    [Migration("20220208043542_UserTable")]
     partial class UserTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<string>("email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("firstName")
                         .IsRequired()
@@ -59,11 +59,11 @@ namespace RepositoryLayer.Migrations
                     b.Property<DateTime>("registeredDate")
                         .HasColumnType("datetime2");
 
+                    b.HasKey("userId");
+
                     b.HasIndex("email")
                         .IsUnique()
                         .HasFilter("[email] IS NOT NULL");
-
-                    b.HasKey("userId");
 
                     b.ToTable("Users");
                 });

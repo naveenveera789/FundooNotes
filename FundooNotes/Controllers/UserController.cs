@@ -49,7 +49,7 @@ namespace FundooNotes.Controllers
                 throw e;
             }
         }
-        [Authorize]
+        [AllowAnonymous]
         [HttpPut("resetpassword")]
         public ActionResult ResetPassword(string email, string password, string cPassword)
         {
@@ -58,7 +58,7 @@ namespace FundooNotes.Controllers
                 //var userEmailObject = User.Claims.First(x => x.Type == "email").Value;
                 if (password != cPassword)
                 {
-                    return BadRequest(new { success = false, message = $"Paswords are not same" });
+                    return BadRequest(new { success = false, message = $"Passwords are not same" });
                 }
                 // var identity = User.Identity as ClaimsIdentity 
                 this.userBL.ResetPassword(email, password, cPassword);

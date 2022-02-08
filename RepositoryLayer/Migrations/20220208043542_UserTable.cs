@@ -17,7 +17,7 @@ namespace RepositoryLayer.Migrations
                     lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     phoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     cPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     registeredDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -27,6 +27,7 @@ namespace RepositoryLayer.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.userId);
                 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Users_email",
                 table: "Users",

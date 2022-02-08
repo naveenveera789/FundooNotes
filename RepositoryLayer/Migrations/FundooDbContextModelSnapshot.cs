@@ -34,7 +34,7 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<string>("email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("firstName")
                         .IsRequired()

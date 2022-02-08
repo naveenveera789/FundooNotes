@@ -1,4 +1,5 @@
 ﻿using CommonLayer.User;
+using Experimental.System.Messaging;
 using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Interface;
 using RepositoryLayer.Services;
@@ -87,6 +88,7 @@ namespace RepositoryLayer.Services
                 {
                     result.password = password;
                     result.cPassword = cPassword;
+                    result.modifiedDate = DateTime.Now;
                     dbContext.SaveChanges();
                 }
             }
