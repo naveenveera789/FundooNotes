@@ -47,11 +47,11 @@ namespace BusinessLayer.Services
                 throw e;
             }
         }
-        public void ForgetPassword(string email)
+        public bool ForgetPassword(string email)
         {
             try
             {
-                userRL.ForgetPassword(email);
+                return userRL.ForgetPassword(email);
             }
             catch(Exception e)
             {

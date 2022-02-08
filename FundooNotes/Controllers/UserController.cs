@@ -23,6 +23,7 @@ namespace FundooNotes.Controllers
             this.userBL = userBL;
             this.dbContext = fundooDb;
         }
+
         [HttpPost("register")]
         public ActionResult RegisterUser(UserPostModel userPostModel)
         {
@@ -36,6 +37,7 @@ namespace FundooNotes.Controllers
                 throw e;
             }
         }
+
         [HttpPost("login")]
         public ActionResult LogInUser(UserLogIn userLogIn)
         {
@@ -49,18 +51,31 @@ namespace FundooNotes.Controllers
                 throw e;
             }
         }
+
+        [HttpPut("forgetpassword")]
+        public ActionResult ForgetPassword(string email)
+        {
+            try
+            {
+                this.userBL.ForgetPassword(email);
+                return this.Ok(new { success = true, message = "Token sent succesfully to email for password reset" });
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
         [AllowAnonymous]
         [HttpPut("resetpassword")]
         public ActionResult ResetPassword(string email, string password, string cPassword)
         {
             try
             {
-                //var userEmailObject = User.Claims.First(x => x.Type == "email").Value;
                 if (password != cPassword)
                 {
-                    return BadRequest(new { success = false, message = $"Passwords are not same" });
+                    return BadRequest(new { success = false, message = $"Paswords are not same" });
                 }
-                // var identity = User.Identity as ClaimsIdentity 
                 this.userBL.ResetPassword(email, password, cPassword);
                 return this.Ok(new { success = true, message = $"Password changed Successfully {email}" });
             }
@@ -69,19 +84,7 @@ namespace FundooNotes.Controllers
                 throw e;
             }
         }
-        [HttpPut("forgetpassword")]
-        public ActionResult ForgetPassword(string email)
-        {
-            try
-            {
-                this.userBL.ForgetPassword(email);
-                return this.Ok(new { success = true, message = $"Token sent succesfully to email {email} for password reset" });
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
-        }
+
         [HttpGet("getallusers")]
         public ActionResult GetAllUsers()
         {
