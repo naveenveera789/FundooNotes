@@ -22,6 +22,7 @@ namespace CommonLayer.User
         public string email { get; set; }
         [Required]
         public string password { get; set; }
+        [Required]
         public string cPassword { get; set; }
         public DateTime registeredDate { get; set; }
         public DateTime modifiedDate { get; set; }

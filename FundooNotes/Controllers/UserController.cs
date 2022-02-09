@@ -1,13 +1,18 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.User;
+using Experimental.System.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Services;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
@@ -44,7 +49,14 @@ namespace FundooNotes.Controllers
             try
             {
                 string result = this.userBL.LogInUser(userLogIn);
-                return this.Ok(new { success = true, message = $"LogIn Successful {userLogIn.email}, data = {result}" });
+                if(result != null)
+                {
+                    return this.Ok(new { success = true, message = $"LogIn Successful {userLogIn.email}, data = {result}" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = $"Enter Valid Email and Password" });
+                }
             }
             catch (Exception e)
             {
@@ -57,8 +69,16 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                this.userBL.ForgetPassword(email);
-                return this.Ok(new { success = true, message = "Token sent succesfully to email for password reset" });
+                var result = dbContext.Users.FirstOrDefault(x => x.email == email);
+                if(result == null)
+                {
+                    return this.BadRequest(new { success = false, message = "Email is invalid" });
+                }
+                else
+                {
+                    this.userBL.ForgetPassword(email);
+                    return this.Ok(new { success = true, message = "Token sent succesfully to email for password reset" });
+                }              
             }
             catch(Exception e)
             {
@@ -68,7 +88,7 @@ namespace FundooNotes.Controllers
 
         [AllowAnonymous]
         [HttpPut("resetpassword")]
-        public ActionResult ResetPassword(string email, string password, string cPassword)
+        public ActionResult ResetPassword(string password, string cPassword)
         {
             try
             {
@@ -76,8 +96,22 @@ namespace FundooNotes.Controllers
                 {
                     return BadRequest(new { success = false, message = $"Paswords are not same" });
                 }
-                this.userBL.ResetPassword(email, password, cPassword);
-                return this.Ok(new { success = true, message = $"Password changed Successfully {email}" });
+                var identity = User.Identity as ClaimsIdentity;
+                if (identity != null)
+                {
+                    IEnumerable<Claim> claims = identity.Claims;
+                    var UserEmailObject = claims.Where(p => p.Type == @"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").FirstOrDefault()?.Value;
+                    if(UserEmailObject != null)
+                    {
+                        this.userBL.ResetPassword(UserEmailObject, password, cPassword);
+                        return Ok(new { success = true, message = "Password Changed Sucessfully" });
+                    }
+                    else
+                    {
+                        return this.BadRequest(new { success = false, message = $"Password not changed Successfully" });
+                    }
+                }
+                return this.BadRequest(new { success = false, message = $"Password not changed Successfully" });
             }
             catch (Exception e)
             {

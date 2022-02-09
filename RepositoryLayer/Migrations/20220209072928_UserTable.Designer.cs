@@ -10,7 +10,7 @@ using RepositoryLayer.Services;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(FundooDbContext))]
-    [Migration("20220208043542_UserTable")]
+    [Migration("20220209072928_UserTable")]
     partial class UserTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
